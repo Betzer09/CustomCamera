@@ -22,20 +22,6 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="elX-Nq-7CB">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVz-9n-9XQ" userLabel="imageFilter">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.44" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPY-bq-sL7" userLabel="PlayButton">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal">
-                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="playPauseVideoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zhs-BL-HAD"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sxc-ix-SpB">
                                 <rect key="frame" x="300" y="743" width="44" height="40"/>
                                 <state key="normal" image="refresh-ccw"/>
@@ -43,12 +29,69 @@
                                     <action selector="flipCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Uit-35-Hn6"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udc-Pb-bXv" customClass="CircleProgressBar" customModule="CustomCamera" customModuleProvider="target">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udc-Pb-bXv" customClass="CircleProgressBar" customModule="CustomCamera" customModuleProvider="target">
                                 <rect key="frame" x="162" y="718" width="90" height="90"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="90" id="Res-47-d2z"/>
                                     <constraint firstAttribute="height" constant="90" id="ayP-a0-IsX"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCG-KV-fze" userLabel="TimeContainer">
+                                <rect key="frame" x="178" y="688" width="58" height="26"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4wM-lE-F84">
+                                        <rect key="frame" x="8" y="9" width="8" height="8"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="8" id="nKI-nc-rf2"/>
+                                            <constraint firstAttribute="height" constant="8" id="veK-ds-lZT"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:15" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPC-fV-m5V">
+                                        <rect key="frame" x="20" y="4.5" width="30" height="17.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.57999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="46b-r3-62W"/>
+                                    <constraint firstItem="4wM-lE-F84" firstAttribute="centerY" secondItem="KCG-KV-fze" secondAttribute="centerY" id="7Qh-w7-Ozm"/>
+                                    <constraint firstAttribute="width" constant="58" id="GZq-Q5-XZH"/>
+                                    <constraint firstItem="HPC-fV-m5V" firstAttribute="centerY" secondItem="KCG-KV-fze" secondAttribute="centerY" id="KJ8-SU-jON"/>
+                                    <constraint firstAttribute="trailing" secondItem="HPC-fV-m5V" secondAttribute="trailing" constant="8" id="at4-GJ-1w4"/>
+                                    <constraint firstItem="HPC-fV-m5V" firstAttribute="leading" secondItem="4wM-lE-F84" secondAttribute="trailing" constant="4" id="itv-aN-Dph"/>
+                                    <constraint firstItem="4wM-lE-F84" firstAttribute="leading" secondItem="KCG-KV-fze" secondAttribute="leading" constant="8" id="kZQ-aH-tFJ"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Ellipse 57" translatesAutoresizingMaskIntoConstraints="NO" id="KKX-HH-Hbw">
+                                <rect key="frame" x="171" y="727" width="72" height="72"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="72" id="9n6-Gj-8bc"/>
+                                    <constraint firstAttribute="width" constant="72" id="bdf-sB-d2K"/>
+                                </constraints>
+                            </imageView>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVz-9n-9XQ" userLabel="imageFilter">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPY-bq-sL7" userLabel="PlayButton">
+                                        <rect key="frame" x="384" y="0.0" width="30" height="896"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="playPauseVideoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zhs-BL-HAD"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.44" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="hPY-bq-sL7" secondAttribute="trailing" id="GHR-U3-Z8s"/>
+                                    <constraint firstItem="hPY-bq-sL7" firstAttribute="top" secondItem="PVz-9n-9XQ" secondAttribute="top" id="IlM-Yn-8cU"/>
+                                    <constraint firstAttribute="bottom" secondItem="hPY-bq-sL7" secondAttribute="bottom" id="JHK-iO-yZO"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -57,14 +100,14 @@
                             <constraint firstAttribute="bottom" secondItem="elX-Nq-7CB" secondAttribute="bottom" id="0Hi-rl-lqi"/>
                             <constraint firstItem="Sxc-ix-SpB" firstAttribute="centerY" secondItem="udc-Pb-bXv" secondAttribute="centerY" id="1MJ-n3-1BN"/>
                             <constraint firstItem="PVz-9n-9XQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="53I-7F-nY3"/>
-                            <constraint firstItem="hPY-bq-sL7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Bcg-MR-TVe"/>
                             <constraint firstAttribute="bottom" secondItem="PVz-9n-9XQ" secondAttribute="bottom" id="Diz-6F-ztH"/>
                             <constraint firstItem="elX-Nq-7CB" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="LNb-vt-vS9"/>
                             <constraint firstItem="elX-Nq-7CB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MZl-XT-LMl"/>
+                            <constraint firstItem="KKX-HH-Hbw" firstAttribute="centerY" secondItem="udc-Pb-bXv" secondAttribute="centerY" id="OdP-D9-meN"/>
                             <constraint firstItem="udc-Pb-bXv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ogu-7r-SwV"/>
                             <constraint firstItem="Yd1-Fa-lvH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="QDJ-zV-7rf"/>
-                            <constraint firstAttribute="trailing" secondItem="hPY-bq-sL7" secondAttribute="trailing" id="Qln-M7-Yn1"/>
-                            <constraint firstItem="hPY-bq-sL7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="RLJ-Of-WIv"/>
+                            <constraint firstItem="KCG-KV-fze" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Tbh-Zh-0Fh"/>
+                            <constraint firstItem="udc-Pb-bXv" firstAttribute="top" secondItem="KCG-KV-fze" secondAttribute="bottom" constant="4" id="ThC-9l-BuD"/>
                             <constraint firstAttribute="trailing" secondItem="Yd1-Fa-lvH" secondAttribute="trailing" id="a0u-gW-FPI"/>
                             <constraint firstItem="Yd1-Fa-lvH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="a8I-ee-lST"/>
                             <constraint firstItem="Sxc-ix-SpB" firstAttribute="leading" secondItem="udc-Pb-bXv" secondAttribute="trailing" constant="48" id="eXQ-2S-Vku"/>
@@ -73,13 +116,14 @@
                             <constraint firstItem="PVz-9n-9XQ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="jOp-J8-N3O"/>
                             <constraint firstAttribute="bottom" secondItem="udc-Pb-bXv" secondAttribute="bottom" constant="88" id="kcd-EB-Edi"/>
                             <constraint firstAttribute="bottom" secondItem="Yd1-Fa-lvH" secondAttribute="bottom" id="nNh-FL-Xdd"/>
-                            <constraint firstAttribute="bottom" secondItem="hPY-bq-sL7" secondAttribute="bottom" id="rzC-kW-BNJ"/>
+                            <constraint firstItem="KKX-HH-Hbw" firstAttribute="centerX" secondItem="udc-Pb-bXv" secondAttribute="centerX" id="wAM-Z2-h0Q"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="cameraPreviewView" destination="Yd1-Fa-lvH" id="jPk-4b-tD7"/>
                         <outlet property="capturedImageView" destination="elX-Nq-7CB" id="oAt-Db-edJ"/>
+                        <outlet property="centerButtonImageView" destination="KKX-HH-Hbw" id="yY7-5c-X8x"/>
                         <outlet property="darkBackgroundImageOverlay" destination="PVz-9n-9XQ" id="w0I-ix-3MN"/>
                         <outlet property="eventVideoPlayButton" destination="hPY-bq-sL7" id="kGG-Oe-8cK"/>
                         <outlet property="progressBar" destination="udc-Pb-bXv" id="RMf-NP-VZU"/>
@@ -92,6 +136,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Ellipse 57" width="72" height="72"/>
         <image name="refresh-ccw" width="44" height="40"/>
     </resources>
 </document>

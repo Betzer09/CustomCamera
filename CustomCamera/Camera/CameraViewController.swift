@@ -26,6 +26,7 @@ class CameraViewController: UIViewController {
     /// If the play video button is selected that means the video is not currently playing, if the playbutton is not selected then the video player is playing.
     @IBOutlet private weak var eventVideoPlayButton: UIButton!
     @IBOutlet private weak var darkBackgroundImageOverlay: UIView!
+    @IBOutlet private weak var centerButtonImageView: UIImageView!
     
     
     // MARK: - Properties
@@ -54,12 +55,13 @@ class CameraViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
-    //
-    private var miliseconds: CGFloat = 1
+    /// This is used to calulate how full the progress bar is.
+    private var tenthsOfaSecond: CGFloat = 1
     
     /// The max video length is configured in millieseconds
     private var maxVideoLength: CGFloat = 150
     
+    /// This is used to time the length of the video
     var videoTimer: Timer?
     
     override func viewDidLoad() {
@@ -68,23 +70,38 @@ class CameraViewController: UIViewController {
         setupGestures()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        removeVideoObserversAndStopPlaying()
+    }
+    
     private func setupGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(capturePhoto(_:)))
-        progressBar.addGestureRecognizer(tapGesture)
+        centerButtonImageView.addGestureRecognizer(tapGesture)
         
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(captureVideo(_:)))
-        progressBar.addGestureRecognizer(longPressRecognizer)
+        centerButtonImageView.addGestureRecognizer(longPressRecognizer)
     }
     
     @objc func captureVideo(_ sender: UILongPressGestureRecognizer) {
         
+        // Setup no photo state
+        if  centerButtonImageView.image == UIImage(named: "removePhoto") {
+            removeVideoObserversAndStopPlaying()
+            resetViewForContentCaputre()
+            return
+        }
         
         if sender.state == .began {
             print("Capture video")
             cameraController.startRecordingVideo()
+            progressBar.isHidden = false
         } else if sender.state == .ended {
             print("End capturing vidoe")
             cameraController.stopRecordingVideo()
+            centerButtonImageView.image = UIImage(named: "removePhoto")
+            progressBar.isHidden = true
         } else {
 //            print("masterclock: \(cameraController.captureSession?.masterClock?.time.seconds)")
 //            print("movieFragmentInterval \(cameraController.movieFileOutput?.movieFragmentInterval)")
@@ -95,13 +112,9 @@ class CameraViewController: UIViewController {
     @objc func capturePhoto(_ sender: UITapGestureRecognizer) {
         
         // Setup no photo state
-        if capturedPhoto != nil {
-            capturedPhoto = nil
-            capturedImageView.isHidden = true
-            cameraController.startRunningSession()
-//            captureImageButton.setImage(UIImage(named: "Ellipse 57"), for: .normal)
-            switchCameraButton.isHidden = false
-            darkBackgroundImageOverlay.alpha = 0
+        if  centerButtonImageView.image == UIImage(named: "removePhoto") {
+            removeVideoObserversAndStopPlaying()
+            resetViewForContentCaputre()
             return
         }
         
@@ -117,6 +130,28 @@ class CameraViewController: UIViewController {
         }
     }
     
+    private func removeVideoObserversAndStopPlaying() {
+        DispatchQueue.main.async {
+            self.eventVideoPlayerLayer?.player?.pause()
+            NotificationCenter.default
+                .removeObserver(self,
+                                name: .AVPlayerItemDidPlayToEndTime,
+                                object: self.eventVideoPlayerLayer?.player?.currentItem)
+        }
+    }
+    /**
+     Reconfigure the view in preperaion of capturing content
+     */
+    private func resetViewForContentCaputre() {
+        capturedPhoto = nil
+        capturedImageView.isHidden = true
+        cameraController.startRunningSession()
+        centerButtonImageView.image = UIImage(named: "Ellipse 57")
+        tenthsOfaSecond = 1
+        progressBar.progress = 0
+        switchCameraButton.isHidden = false
+        darkBackgroundImageOverlay.alpha = 0
+    }
     
     @IBAction private func flipCamera(_ sender: Any) {
         do {
@@ -127,6 +162,8 @@ class CameraViewController: UIViewController {
     }
     
     @IBAction func playPauseVideoButtonTapped(_ sender: Any) {
+        // Skip taps if we don't have a player
+        guard eventVideoPlayerLayer != nil else {return}
         eventVideoPlayButton.isSelected = !eventVideoPlayButton.isSelected
         togglePlayAndPause()
     }
@@ -162,7 +199,7 @@ class CameraViewController: UIViewController {
         if let image = capturedPhoto {
             capturedImageView.image = image
             capturedImageView.isHidden = false
-//            captureImageButton.setImage(UIImage(named: "removePhoto"), for: .normal)
+            centerButtonImageView.image = UIImage(named: "removePhoto")
             cameraController.stopCurrentSession()
             switchCameraButton.isHidden = true
             darkBackgroundImageOverlay.alpha = 1
@@ -207,8 +244,6 @@ class CameraViewController: UIViewController {
             if player.status == .readyToPlay {
                 DispatchQueue.main.async {
                     try? AVAudioSession.sharedInstance().setCategory(.playback)
-//                    self.eventVideoPlayButton.isHidden = false
-//                    self.loadingVideoIndicator.stopAnimating()
                 }
             }
         }
@@ -253,8 +288,8 @@ extension CameraViewController: CameraControllerDelegate {
         
         // Fires every millisend
         let timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.1), repeats: true, block: { [weak self] (_) in
-            self?.miliseconds += 1
-            let progress = (self?.miliseconds ?? 0) / (self?.maxVideoLength ?? 0)
+            self?.tenthsOfaSecond += 1
+            let progress = (self?.tenthsOfaSecond ?? 0) / (self?.maxVideoLength ?? 0)
             print("***** Progress: \(progress)")
             self?.progressBar.progress = progress
         })

@@ -45,12 +45,7 @@ class CircleProgressBar: UIView {
         progressLayer.fillColor = nil
         layer.addSublayer(progressLayer)
         layer.transform = CATransform3DMakeRotation(CGFloat(90 * Double.pi / 180), 0, 0, -1)
-        
-        let backgroundView = UIView()
-        backgroundView.frame = self.frame
-        backgroundView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        backgroundView.backgroundColor = .systemPink
-        self.insertSubview(backgroundView, aboveSubview: self)
+
     }
 
     override func draw(_ rect: CGRect) {
