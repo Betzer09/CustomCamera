@@ -67,6 +67,9 @@ class CameraViewController: UIViewController {
     
     private var currentVideoLength: Int = 0
     
+    /// The current captured video URL
+    private var capturedVideoURL: URL?
+    
     /// This is used to time the length of the video
     var videoTimer: Timer?
     
@@ -124,6 +127,7 @@ class CameraViewController: UIViewController {
             return
         }
         
+        self.capturedPhoto = nil
         // We don't have a photo, so lets capture one
         cameraController.captureImage { (image, error) in
             if let error = error {
@@ -150,7 +154,11 @@ class CameraViewController: UIViewController {
      Reconfigure the view in preperaion of capturing content
      */
     private func resetViewForContentCaputre() {
+        capturedImageView.image = nil
+        eventVideoPlayerLayer = nil
+        eventVideoPlayerLayer?.removeFromSuperlayer()
         capturedPhoto = nil
+        capturedVideoURL = nil
         capturedImageView.isHidden = true
         cameraController.startRunningSession()
         centerButtonImageView.image = UIImage(named: "Ellipse 57")
@@ -177,13 +185,17 @@ class CameraViewController: UIViewController {
         togglePlayAndPause()
     }
     
-    
-    @IBAction func downloadButtonTapped(_ sender: Any) {
-        guard let photo = capturedPhoto else {return}
-        PhotoHelper.downlaodImageToDisk(photo, vc: self)
+    @IBAction func pinchToZoom(_ pinch: UIPinchGestureRecognizer) {
+        cameraController.zoom(pintch: pinch)
     }
     
-    
+    @IBAction func downloadButtonTapped(_ sender: Any) {
+        if let _ = capturedPhoto {
+            downloadImageToDisk()
+        } else if let videoURL = capturedVideoURL {
+            downloadVideoToDisk(videoURL)
+        }
+    }
     
 
     // MARK: - Camera Sesion
@@ -240,14 +252,17 @@ class CameraViewController: UIViewController {
     private func setupViewToRenderVideo(with videoUrl: URL) {
         let avPlayer = AVPlayer(url: videoUrl)
         self.eventVideoPlayerLayer = AVPlayerLayer(player: avPlayer)
+        self.capturedVideoURL = videoUrl
         guard eventVideoPlayerLayer != nil else { return }
         eventVideoPlayerLayer!.frame = capturedImageView.bounds
         capturedImageView.layer.addSublayer(eventVideoPlayerLayer!)
         eventVideoPlayerLayer!.videoGravity = .resizeAspectFill
         eventVideoPlayerLayer?.player?.isMuted = false
 
+
         // Setup Video playing state
-        darkBackgroundImageOverlay.alpha = 0
+        capturedImageView.isHidden = false
+        darkBackgroundImageOverlay.alpha = 1
         eventVideoPlayButton.isSelected = false
         eventVideoPlayerLayer?.player?.play()
         downloadButton.isHidden = false
@@ -289,15 +304,51 @@ class CameraViewController: UIViewController {
     }
 }
 
+// MARK: - Save Video & Photos
+extension CameraViewController {
+
+    private func downloadImageToDisk() {
+        guard let image = capturedPhoto else {return}
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    private func downloadVideoToDisk(_ videoPath: URL) {
+        guard UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoPath.path) else {return}
+        // Handle a movie capture
+        UISaveVideoAtPathToSavedPhotosAlbum(videoPath.path,self, #selector(video(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        let title = (error == nil) ? "Success" : "Error"
+        let message = (error == nil) ? "Video was saved" : "Video failed to save"
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    @objc func video(_ videoPath: String, didFinishSavingWithError error: Error?, contextInfo info: AnyObject) {
+      let title = (error == nil) ? "Success" : "Error"
+      let message = (error == nil) ? "Video was saved" : "Video failed to save"
+      
+      let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+      present(alert, animated: true, completion: nil)
+    }
+}
+
 // MARK: - CameraDelegate
 extension CameraViewController: CameraControllerDelegate {
     
     
     func didFailToRecordVideo(_ cameraController: CameraController, error: Error, outputURL: URL) {
         print("Failed to being recoridng video with err: \(error.localizedDescription)")
-        videoTimer?.invalidate()
-        setupViewToRenderVideo(with: outputURL)
-        elapsedTimerContainer.isHidden = true
+        DispatchQueue.main.async { [weak self] in
+            self?.videoTimer?.invalidate()
+            self?.setupViewToRenderVideo(with: outputURL)
+            self?.elapsedTimerContainer.isHidden = true
+        }
     }
     
     internal func didBeginRecording() {
@@ -335,7 +386,7 @@ extension CameraViewController: CameraControllerDelegate {
         videoTimer?.invalidate()
         setupViewToRenderVideo(with: outputFileURL)
         elapsedTimerContainer.isHidden = true
-        
+        cameraController.stopCurrentSession()
     }
 }
 

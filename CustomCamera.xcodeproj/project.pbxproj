@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		234D2E9E24855E3200E8CBB2 /* CameraControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234D2E9D24855E3200E8CBB2 /* CameraControllerDelegate.swift */; };
-		236E083B2486C789008EC819 /* PhotoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E083A2486C789008EC819 /* PhotoHelper.swift */; };
 		23CAB0BF2481B4A800DFFCF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CAB0BE2481B4A800DFFCF7 /* AppDelegate.swift */; };
 		23CAB0C12481B4A800DFFCF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CAB0C02481B4A800DFFCF7 /* SceneDelegate.swift */; };
 		23CAB0C62481B4A800DFFCF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23CAB0C42481B4A800DFFCF7 /* Main.storyboard */; };
@@ -40,7 +39,6 @@
 
 /* Begin PBXFileReference section */
 		234D2E9D24855E3200E8CBB2 /* CameraControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControllerDelegate.swift; sourceTree = "<group>"; };
-		236E083A2486C789008EC819 /* PhotoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHelper.swift; sourceTree = "<group>"; };
 		23CAB0BB2481B4A800DFFCF7 /* CustomCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23CAB0BE2481B4A800DFFCF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23CAB0C02481B4A800DFFCF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,7 +87,6 @@
 			children = (
 				23CAB0F12481BD3400DFFCF7 /* CameraController.swift */,
 				234D2E9D24855E3200E8CBB2 /* CameraControllerDelegate.swift */,
-				236E083A2486C789008EC819 /* PhotoHelper.swift */,
 			);
 			path = CustomCamera;
 			sourceTree = "<group>";
@@ -298,7 +295,6 @@
 				23CAB0BF2481B4A800DFFCF7 /* AppDelegate.swift in Sources */,
 				23CAB0F52481D44D00DFFCF7 /* CircleProgressBar.swift in Sources */,
 				23CAB0C12481B4A800DFFCF7 /* SceneDelegate.swift in Sources */,
-				236E083B2486C789008EC819 /* PhotoHelper.swift in Sources */,
 				234D2E9E24855E3200E8CBB2 /* CameraControllerDelegate.swift in Sources */,
 				23CAB0F22481BD3400DFFCF7 /* CameraController.swift in Sources */,
 				23CAB0F02481B65100DFFCF7 /* CameraViewController.swift in Sources */,

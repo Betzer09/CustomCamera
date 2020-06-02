@@ -19,6 +19,17 @@ class CameraController: NSObject {
     /// The current camera position set
     private(set) var currentCameraPosition: CameraPosition?
     private(set) var photoCaptureCompletionBlock: ((UIImage?, Error?) -> Void)?
+    /// The current zoom scale
+    private(set) var pinchScale: CGFloat = 1.0
+    /// The current capture session
+    private(set) var captureSession: AVCaptureSession?
+    /// Movie File Output variable
+    private(set) var movieFileOutput: AVCaptureMovieFileOutput?
+    /// Returns true if video is currently being recorded
+    private(set) public var isVideoRecording = false
+    private(set) var videoQuality : AVCaptureSession.Preset = .high
+    /// The maximum duration for a video, in seconds
+    private(set) var maximumVideoDuration: Double = 15.0
     
     // MARK: - Private Properties
     private var frontCameraInput: AVCaptureDeviceInput?
@@ -35,8 +46,6 @@ class CameraController: NSObject {
     /// The device used to capture audio
     let audioDevice = AVCaptureDevice.default(for: .audio)
     
-    /// The current capture session
-    private(set) var captureSession: AVCaptureSession?
     private var photoOutput: AVCapturePhotoOutput?
     
     /**
@@ -52,31 +61,21 @@ class CameraController: NSObject {
     /// BackgroundID variable for video recording
     fileprivate var backgroundRecordingID: UIBackgroundTaskIdentifier? = nil
     
-     /// Movie File Output variable
-    private(set) var movieFileOutput: AVCaptureMovieFileOutput?
-    
     /// Video will be recorded to this folder
     private var outputFolder: String = NSTemporaryDirectory()
-    
-    /// Returns true if video is currently being recorded
-    private(set) public var isVideoRecording = false
     
     /// Sets output video codec
     public var videoCodecType: AVVideoCodecType? = nil
     
     /// The camera delegate that informts you have videos actions
     public weak var cameraDelegate: CameraControllerDelegate?
-    
-    private(set) var videoQuality : AVCaptureSession.Preset = .high
-    /// The maximum duration for a video, in seconds
-    private(set) var maximumVideoDuration: Double = 15.0
 }
 
 extension CameraController {
     /**
-     Stops running the current capture session, meaing the user will get a preview of their camera position
+     Stops running the current capture session, meaing the user will stop getting a preview of their camera position
      */
-    func stopCurrentSession() {
+    public func stopCurrentSession() {
         self.captureSession?.stopRunning()
         self.previewLayer?.isHidden = true
     }
@@ -84,10 +83,38 @@ extension CameraController {
     /**
      Starts running the current capture session, meaing the user will get a preview of their camera position
      */
-    func startRunningSession() {
+    public func startRunningSession() {
         self.captureSession?.startRunning()
         self.previewLayer?.isHidden = false
     }
+    
+    /**
+     pass in a pintch gesture and the capture device will zoom
+     */
+    public func zoom(pintch gesture: UIPinchGestureRecognizer) {
+        
+        let output: AVCaptureDevice? = currentCameraPosition == .front ? frontCamera : rearCamera
+        guard let device = output else {return}
+        
+        do {
+            try device.lockForConfiguration()
+            switch gesture.state {
+            case .began:
+                self.pinchScale = device.videoZoomFactor
+            case .changed:
+                var factor = self.pinchScale * gesture.scale
+                factor = max(1, min(factor, device.activeFormat.videoMaxZoomFactor))
+                device.videoZoomFactor = factor
+            default:
+                break
+            }
+            device.unlockForConfiguration()
+        } catch {
+            // handle exception
+            print("[CameraController] failed to zoom: \(error.localizedDescription)")
+        }
+    }
+    
     
     func prepare(withVideoQuality: AVCaptureSession.Preset = .high, completionHandler: @escaping (Error?) -> Void) {
         func createCaptureSession() {
