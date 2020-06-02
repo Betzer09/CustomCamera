@@ -179,7 +179,8 @@ class CameraViewController: UIViewController {
     
     
     @IBAction func downloadButtonTapped(_ sender: Any) {
-        
+        guard let photo = capturedPhoto else {return}
+        PhotoHelper.downlaodImageToDisk(photo, vc: self)
     }
     
     
