@@ -31,6 +31,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var elapsedTimerContainer: UIView!
     @IBOutlet weak var elapsedTimerLabel: UILabel!
+    @IBOutlet weak var toggleFlashButton: UIButton!
     
     
     // MARK: - Properties
@@ -166,8 +167,9 @@ class CameraViewController: UIViewController {
         progressBar.progress = 0
         switchCameraButton.isHidden = false
         darkBackgroundImageOverlay.alpha = 0
-        self.switchCameraButton.isHidden = false
+        switchCameraButton.isHidden = false
         downloadButton.isHidden = true
+        toggleFlashButton.isHidden = false
     }
     
     @IBAction private func flipCamera(_ sender: Any) {
@@ -197,7 +199,13 @@ class CameraViewController: UIViewController {
         }
     }
     
-
+    @IBAction func toggleFlashTapped(_ sender: Any) {
+        cameraController.toggleFlash { (isFlashEnabled) in
+            let image: UIImage = isFlashEnabled == true ? UIImage(named: "flash-enabled")! : UIImage(named: "flash-disabled")!
+            self.toggleFlashButton.setImage(image, for: .normal)
+        }
+    }
+    
     // MARK: - Camera Sesion
     private func togglePlayAndPause() {
         if eventVideoPlayButton.isSelected {
@@ -231,6 +239,7 @@ class CameraViewController: UIViewController {
             switchCameraButton.isHidden = true
             darkBackgroundImageOverlay.alpha = 1
             downloadButton.isHidden = false
+            toggleFlashButton.isHidden = true
         }
     }
 
@@ -266,6 +275,7 @@ class CameraViewController: UIViewController {
         eventVideoPlayButton.isSelected = false
         eventVideoPlayerLayer?.player?.play()
         downloadButton.isHidden = false
+        toggleFlashButton.isHidden = true
     }
     
     private func beginObservingPlayer() {

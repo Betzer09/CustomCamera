@@ -31,6 +31,8 @@ class CameraController: NSObject {
     /// The maximum duration for a video, in seconds
     private(set) var maximumVideoDuration: Double = 15.0
     
+
+    
     // MARK: - Private Properties
     private var frontCameraInput: AVCaptureDeviceInput?
     private lazy var frontCamera: AVCaptureDevice? = {
@@ -43,6 +45,15 @@ class CameraController: NSObject {
         AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
     }()
     
+    /// The current output device
+    private var currentOutputDevcie: AVCaptureDevice? {
+        get {
+            let output: AVCaptureDevice? = currentCameraPosition == .front ? frontCamera : rearCamera
+            guard let device = output else {return nil}
+            return device
+        }
+    }
+    
     /// The device used to capture audio
     let audioDevice = AVCaptureDevice.default(for: .audio)
     
@@ -52,7 +63,8 @@ class CameraController: NSObject {
      The video preview layer, this layer is added as a sublayer to the view controller so you can see the current frame of the camera. Meaning this just plays back what the you are capturing.
      */
     private var previewLayer: AVCaptureVideoPreviewLayer?
- 
+    
+    /// Indicates the mode that flash is currently in
     private var flashMode = AVCaptureDevice.FlashMode.off
     
     // MARK: - Video Properties
@@ -72,6 +84,7 @@ class CameraController: NSObject {
 }
 
 extension CameraController {
+    // MARK: - Public Methods
     /**
      Stops running the current capture session, meaing the user will stop getting a preview of their camera position
      */
@@ -89,12 +102,27 @@ extension CameraController {
     }
     
     /**
+     Toggles the captures session flash abilites
+     */
+    public func toggleFlash(completion: @escaping(_ isFlashOn: Bool) ->()) {
+        switch flashMode {
+        case .auto, .off:
+            flashMode = .on
+            completion(true)
+        case .on:
+            flashMode = .off
+            completion(false)
+        @unknown default:
+            print("[CameraController]: Unknown flash state: \(flashMode)")
+            completion(false)
+        }
+    }
+    
+    /**
      pass in a pintch gesture and the capture device will zoom
      */
     public func zoom(pintch gesture: UIPinchGestureRecognizer) {
-        
-        let output: AVCaptureDevice? = currentCameraPosition == .front ? frontCamera : rearCamera
-        guard let device = output else {return}
+        guard let device = currentOutputDevcie else {return}
         
         do {
             try device.lockForConfiguration()
@@ -116,7 +144,7 @@ extension CameraController {
     }
     
     
-    func prepare(withVideoQuality: AVCaptureSession.Preset = .high, completionHandler: @escaping (Error?) -> Void) {
+    public func prepare(withVideoQuality: AVCaptureSession.Preset = .high, completionHandler: @escaping (Error?) -> Void) {
         func createCaptureSession() {
             self.captureSession = AVCaptureSession()
         }
@@ -318,6 +346,17 @@ extension CameraController {
     Begin recording video of current session
     */
     public func startRecordingVideo() {
+        
+        guard let device = currentOutputDevcie else {return}
+        
+        
+        if flashMode == .on {
+            try? device.lockForConfiguration()
+            try? device.setTorchModeOn(level: 1.0)
+            device.unlockForConfiguration()
+        }
+        
+        
         guard captureSession?.isRunning == true else {
             print("Cannot start video recoding. Capture session is not running")
             return

@@ -96,6 +96,14 @@
                                     <action selector="downloadButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pn0-eP-6aK"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDR-G7-Kou" userLabel="toggleFlashTapped">
+                                <rect key="frame" x="366" y="68" width="24" height="26"/>
+                                <state key="normal" image="flash-disabled"/>
+                                <connections>
+                                    <action selector="downloadButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dx6-fc-x3U"/>
+                                    <action selector="toggleFlashTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pLI-J8-5jb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -108,6 +116,7 @@
                             <constraint firstItem="elX-Nq-7CB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MZl-XT-LMl"/>
                             <constraint firstItem="KKX-HH-Hbw" firstAttribute="centerY" secondItem="udc-Pb-bXv" secondAttribute="centerY" id="OdP-D9-meN"/>
                             <constraint firstItem="udc-Pb-bXv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ogu-7r-SwV"/>
+                            <constraint firstItem="bDR-G7-Kou" firstAttribute="top" secondItem="E74-Vh-282" secondAttribute="top" id="Pjt-6b-D55"/>
                             <constraint firstItem="Yd1-Fa-lvH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="QDJ-zV-7rf"/>
                             <constraint firstItem="hPY-bq-sL7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Rav-56-JqA"/>
                             <constraint firstItem="hPY-bq-sL7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Re4-0L-bLm"/>
@@ -117,6 +126,8 @@
                             <constraint firstAttribute="bottom" secondItem="hPY-bq-sL7" secondAttribute="bottom" id="Wfy-bi-XsX"/>
                             <constraint firstAttribute="trailing" secondItem="Yd1-Fa-lvH" secondAttribute="trailing" id="a0u-gW-FPI"/>
                             <constraint firstItem="Yd1-Fa-lvH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="a8I-ee-lST"/>
+                            <constraint firstItem="bDR-G7-Kou" firstAttribute="leading" secondItem="E74-Vh-282" secondAttribute="leading" id="c57-hd-Fb5"/>
+                            <constraint firstItem="bDR-G7-Kou" firstAttribute="trailing" secondItem="E74-Vh-282" secondAttribute="trailing" id="c6H-ar-npU"/>
                             <constraint firstItem="Sxc-ix-SpB" firstAttribute="leading" secondItem="udc-Pb-bXv" secondAttribute="trailing" constant="48" id="eXQ-2S-Vku"/>
                             <constraint firstItem="hPY-bq-sL7" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fAL-rI-072"/>
                             <constraint firstItem="elX-Nq-7CB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hvN-8P-qpC"/>
@@ -124,6 +135,7 @@
                             <constraint firstItem="PVz-9n-9XQ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="jOp-J8-N3O"/>
                             <constraint firstAttribute="bottom" secondItem="udc-Pb-bXv" secondAttribute="bottom" constant="88" id="kcd-EB-Edi"/>
                             <constraint firstAttribute="bottom" secondItem="Yd1-Fa-lvH" secondAttribute="bottom" id="nNh-FL-Xdd"/>
+                            <constraint firstItem="bDR-G7-Kou" firstAttribute="bottom" secondItem="E74-Vh-282" secondAttribute="bottom" id="vbq-88-e0x"/>
                             <constraint firstItem="KKX-HH-Hbw" firstAttribute="centerX" secondItem="udc-Pb-bXv" secondAttribute="centerX" id="wAM-Z2-h0Q"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -139,6 +151,7 @@
                         <outlet property="eventVideoPlayButton" destination="hPY-bq-sL7" id="kGG-Oe-8cK"/>
                         <outlet property="progressBar" destination="udc-Pb-bXv" id="RMf-NP-VZU"/>
                         <outlet property="switchCameraButton" destination="Sxc-ix-SpB" id="53y-90-ahW"/>
+                        <outlet property="toggleFlashButton" destination="bDR-G7-Kou" id="7WQ-ic-bXE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -154,6 +167,7 @@
     <resources>
         <image name="Ellipse 57" width="72" height="72"/>
         <image name="download" width="24" height="26"/>
+        <image name="flash-disabled" width="24" height="24"/>
         <image name="refresh-ccw" width="44" height="40"/>
     </resources>
 </document>
