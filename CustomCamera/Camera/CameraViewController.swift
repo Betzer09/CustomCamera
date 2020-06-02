@@ -133,6 +133,7 @@ class CameraViewController: UIViewController {
             
             guard let image = image else {return}
             self.capturedPhoto = image
+            self.switchCameraButton.isHidden = true
         }
     }
     
@@ -157,6 +158,8 @@ class CameraViewController: UIViewController {
         progressBar.progress = 0
         switchCameraButton.isHidden = false
         darkBackgroundImageOverlay.alpha = 0
+        self.switchCameraButton.isHidden = false
+        downloadButton.isHidden = true
     }
     
     @IBAction private func flipCamera(_ sender: Any) {
@@ -214,6 +217,7 @@ class CameraViewController: UIViewController {
             cameraController.stopCurrentSession()
             switchCameraButton.isHidden = true
             darkBackgroundImageOverlay.alpha = 1
+            downloadButton.isHidden = false
         }
     }
 
@@ -245,6 +249,7 @@ class CameraViewController: UIViewController {
         darkBackgroundImageOverlay.alpha = 0
         eventVideoPlayButton.isSelected = false
         eventVideoPlayerLayer?.player?.play()
+        downloadButton.isHidden = false
     }
     
     private func beginObservingPlayer() {
@@ -298,6 +303,7 @@ extension CameraViewController: CameraControllerDelegate {
         print("didBeginRecording")
         
         elapsedTimerContainer.isHidden = false
+        self.switchCameraButton.isHidden = true
         
         // Fires every millisend
         videoTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.1), repeats: true, block: { [weak self] (_) in
@@ -315,7 +321,6 @@ extension CameraViewController: CameraControllerDelegate {
             // make sure we don't go over 15 seconds
             guard time <= 15 else {return}
             self?.elapsedTimerLabel.text = time.stringDuration
-            
         })
     }
     
@@ -344,10 +349,6 @@ extension Double {
         let floorCounter = Int(floor(self))
         let minute = (floorCounter % 3600) / 60
         let minuteString = "\(minute)"
-        
-//        if minute < 10 {
-//            minuteString = "0\(minute)"
-//        }
         
         let second = (floorCounter % 3600) % 60
         
