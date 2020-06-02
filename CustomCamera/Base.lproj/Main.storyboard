@@ -22,6 +22,16 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="elX-Nq-7CB">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPY-bq-sL7" userLabel="PlayButton">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="playPauseVideoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zhs-BL-HAD"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sxc-ix-SpB">
                                 <rect key="frame" x="300" y="743" width="44" height="40"/>
                                 <state key="normal" image="refresh-ccw"/>
@@ -37,7 +47,7 @@
                                     <constraint firstAttribute="height" constant="90" id="ayP-a0-IsX"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCG-KV-fze" userLabel="TimeContainer">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCG-KV-fze" userLabel="TimeContainer">
                                 <rect key="frame" x="178" y="688" width="58" height="26"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4wM-lE-F84">
@@ -48,7 +58,7 @@
                                             <constraint firstAttribute="height" constant="8" id="veK-ds-lZT"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:15" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPC-fV-m5V">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPC-fV-m5V">
                                         <rect key="frame" x="20" y="4.5" width="30" height="17.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -75,25 +85,15 @@
                             </imageView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVz-9n-9XQ" userLabel="imageFilter">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPY-bq-sL7" userLabel="PlayButton">
-                                        <rect key="frame" x="384" y="0.0" width="30" height="896"/>
-                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal">
-                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="playPauseVideoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zhs-BL-HAD"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.44" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="hPY-bq-sL7" secondAttribute="trailing" id="GHR-U3-Z8s"/>
-                                    <constraint firstItem="hPY-bq-sL7" firstAttribute="top" secondItem="PVz-9n-9XQ" secondAttribute="top" id="IlM-Yn-8cU"/>
-                                    <constraint firstAttribute="bottom" secondItem="hPY-bq-sL7" secondAttribute="bottom" id="JHK-iO-yZO"/>
-                                </constraints>
                             </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E74-Vh-282">
+                                <rect key="frame" x="366" y="68" width="24" height="26"/>
+                                <state key="normal" image="download"/>
+                                <connections>
+                                    <action selector="downloadButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pn0-eP-6aK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -101,16 +101,22 @@
                             <constraint firstItem="Sxc-ix-SpB" firstAttribute="centerY" secondItem="udc-Pb-bXv" secondAttribute="centerY" id="1MJ-n3-1BN"/>
                             <constraint firstItem="PVz-9n-9XQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="53I-7F-nY3"/>
                             <constraint firstAttribute="bottom" secondItem="PVz-9n-9XQ" secondAttribute="bottom" id="Diz-6F-ztH"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="E74-Vh-282" secondAttribute="trailing" constant="24" id="E2j-3E-XhU"/>
                             <constraint firstItem="elX-Nq-7CB" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="LNb-vt-vS9"/>
                             <constraint firstItem="elX-Nq-7CB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MZl-XT-LMl"/>
                             <constraint firstItem="KKX-HH-Hbw" firstAttribute="centerY" secondItem="udc-Pb-bXv" secondAttribute="centerY" id="OdP-D9-meN"/>
                             <constraint firstItem="udc-Pb-bXv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ogu-7r-SwV"/>
                             <constraint firstItem="Yd1-Fa-lvH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="QDJ-zV-7rf"/>
+                            <constraint firstItem="hPY-bq-sL7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Rav-56-JqA"/>
+                            <constraint firstItem="hPY-bq-sL7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Re4-0L-bLm"/>
                             <constraint firstItem="KCG-KV-fze" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Tbh-Zh-0Fh"/>
                             <constraint firstItem="udc-Pb-bXv" firstAttribute="top" secondItem="KCG-KV-fze" secondAttribute="bottom" constant="4" id="ThC-9l-BuD"/>
+                            <constraint firstItem="E74-Vh-282" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="24" id="Vy0-YB-Oft"/>
+                            <constraint firstAttribute="bottom" secondItem="hPY-bq-sL7" secondAttribute="bottom" id="Wfy-bi-XsX"/>
                             <constraint firstAttribute="trailing" secondItem="Yd1-Fa-lvH" secondAttribute="trailing" id="a0u-gW-FPI"/>
                             <constraint firstItem="Yd1-Fa-lvH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="a8I-ee-lST"/>
                             <constraint firstItem="Sxc-ix-SpB" firstAttribute="leading" secondItem="udc-Pb-bXv" secondAttribute="trailing" constant="48" id="eXQ-2S-Vku"/>
+                            <constraint firstItem="hPY-bq-sL7" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fAL-rI-072"/>
                             <constraint firstItem="elX-Nq-7CB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hvN-8P-qpC"/>
                             <constraint firstItem="PVz-9n-9XQ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="iSI-EK-Ns5"/>
                             <constraint firstItem="PVz-9n-9XQ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="jOp-J8-N3O"/>
@@ -125,6 +131,9 @@
                         <outlet property="capturedImageView" destination="elX-Nq-7CB" id="oAt-Db-edJ"/>
                         <outlet property="centerButtonImageView" destination="KKX-HH-Hbw" id="yY7-5c-X8x"/>
                         <outlet property="darkBackgroundImageOverlay" destination="PVz-9n-9XQ" id="w0I-ix-3MN"/>
+                        <outlet property="downloadButton" destination="E74-Vh-282" id="GxN-iC-Gdv"/>
+                        <outlet property="elapsedTimerContainer" destination="KCG-KV-fze" id="nRJ-SG-t5g"/>
+                        <outlet property="elapsedTimerLabel" destination="HPC-fV-m5V" id="xQj-ox-ymw"/>
                         <outlet property="eventVideoPlayButton" destination="hPY-bq-sL7" id="kGG-Oe-8cK"/>
                         <outlet property="progressBar" destination="udc-Pb-bXv" id="RMf-NP-VZU"/>
                         <outlet property="switchCameraButton" destination="Sxc-ix-SpB" id="53y-90-ahW"/>
@@ -132,11 +141,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
+            <point key="canvasLocation" x="127.53623188405798" y="154.6875"/>
         </scene>
     </scenes>
     <resources>
         <image name="Ellipse 57" width="72" height="72"/>
+        <image name="download" width="24" height="26"/>
         <image name="refresh-ccw" width="44" height="40"/>
     </resources>
 </document>

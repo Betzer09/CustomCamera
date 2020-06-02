@@ -27,6 +27,10 @@ class CameraViewController: UIViewController {
     @IBOutlet private weak var eventVideoPlayButton: UIButton!
     @IBOutlet private weak var darkBackgroundImageOverlay: UIView!
     @IBOutlet private weak var centerButtonImageView: UIImageView!
+    /// A button that allows the user to download a photo or video, this is hidden until we have one or the other.
+    @IBOutlet weak var downloadButton: UIButton!
+    @IBOutlet weak var elapsedTimerContainer: UIView!
+    @IBOutlet weak var elapsedTimerLabel: UILabel!
     
     
     // MARK: - Properties
@@ -58,8 +62,10 @@ class CameraViewController: UIViewController {
     /// This is used to calulate how full the progress bar is.
     private var tenthsOfaSecond: CGFloat = 1
     
-    /// The max video length is configured in millieseconds
+    /// The max video length is configured in 1/10 of a second, so if you divide this number by 10 that is the max length in seconds.
     private var maxVideoLength: CGFloat = 150
+    
+    private var currentVideoLength: Int = 0
     
     /// This is used to time the length of the video
     var videoTimer: Timer?
@@ -166,6 +172,11 @@ class CameraViewController: UIViewController {
         guard eventVideoPlayerLayer != nil else {return}
         eventVideoPlayButton.isSelected = !eventVideoPlayButton.isSelected
         togglePlayAndPause()
+    }
+    
+    
+    @IBAction func downloadButtonTapped(_ sender: Any) {
+        
     }
     
     
@@ -280,31 +291,73 @@ extension CameraViewController: CameraControllerDelegate {
         print("Failed to being recoridng video with err: \(error.localizedDescription)")
         videoTimer?.invalidate()
         setupViewToRenderVideo(with: outputURL)
-        
+        elapsedTimerContainer.isHidden = true
     }
     
     internal func didBeginRecording() {
         print("didBeginRecording")
         
+        elapsedTimerContainer.isHidden = false
+        
         // Fires every millisend
-        let timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.1), repeats: true, block: { [weak self] (_) in
+        videoTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.1), repeats: true, block: { [weak self] (_) in
             self?.tenthsOfaSecond += 1
             let progress = (self?.tenthsOfaSecond ?? 0) / (self?.maxVideoLength ?? 0)
-            print("***** Progress: \(progress)")
+//            print("***** Progress: \(progress)")
+            
+            
             self?.progressBar.progress = progress
+
+            guard let t = self?.tenthsOfaSecond else {return}
+            let time: Double = round(Double(t) / 10)
+            print("***** time: \(time)")
+            
+            // make sure we don't go over 15 seconds
+            guard time <= 15 else {return}
+            self?.elapsedTimerLabel.text = time.stringDuration
+            
         })
-        
-        self.videoTimer = timer
     }
     
     internal func didFinishRecordingVideo(_ cameraController: CameraController) {
         print("didFinishRecordingVideo")
+        elapsedTimerContainer.isHidden = true
     }
     
     internal func didFinishProcessVideoAt(_ cameraController: CameraController, outputFileURL: URL) {
         print("didFinishProcessVideoAt output: \(outputFileURL)")
         videoTimer?.invalidate()
         setupViewToRenderVideo(with: outputFileURL)
+        elapsedTimerContainer.isHidden = true
+        
+    }
+}
+
+extension Double {
+    /// Converts the double into a string representing the time elapsed. ex: 80 Seconds converts to 1:20
+    var stringDuration: String {
+        return convertDoubleToTime()
+    }
+    
+    // Converts a double to a time string.
+    private func convertDoubleToTime() -> String {
+        let floorCounter = Int(floor(self))
+        let minute = (floorCounter % 3600) / 60
+        let minuteString = "\(minute)"
+        
+//        if minute < 10 {
+//            minuteString = "0\(minute)"
+//        }
+        
+        let second = (floorCounter % 3600) % 60
+        
+        var secondString = "\(second)"
+        
+        if second < 10 {
+            secondString = "0\(second)"
+        }
+        
+        return minuteString + ":" + secondString
     }
     
 }
